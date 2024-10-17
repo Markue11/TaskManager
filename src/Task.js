@@ -18,18 +18,16 @@ const App = () => {
         priority: priorityInput,
         dueDate: new Date(dueDateInput),
       };
-      setTasks((prevTasks) => [...prevTasks, newTask]);
+      setTasks([...tasks, newTask]);
       setTaskInput('');
       setDueDateInput('');
     }
   };
 
   const handleToggleComplete = (id) => {
-    setTasks((prevTasks) =>
-      prevTasks.map(task =>
-        task.id === id ? { ...task, completed: !task.completed } : task
-      )
-    );
+    setTasks(tasks.map(task =>
+      task.id === id ? { ...task, completed: !task.completed } : task
+    ));
   };
 
   const handleFilterChange = (e) => {
@@ -41,12 +39,16 @@ const App = () => {
   };
 
   const filteredTasks = tasks.filter(task => {
-    if (filterStatus === 'Completed') return task.completed;
-    if (filterStatus === 'Incomplete') return !task.completed;
+    if (filterStatus === 'Completed') {
+      return task.completed;
+    }
+    if (filterStatus === 'Incomplete') {
+      return !task.completed;
+    }
     return true; // All tasks
   });
 
-  const sortedTasks = [...filteredTasks].sort((a, b) => {
+  const sortedTasks = filteredTasks.sort((a, b) => {
     if (sortOption === 'Priority') {
       const priorities = { High: 1, Medium: 2, Low: 3 };
       return priorities[a.priority] - priorities[b.priority];
@@ -66,7 +68,10 @@ const App = () => {
         value={taskInput}
         onChange={(e) => setTaskInput(e.target.value)}
       />
-      <select value={priorityInput} onChange={(e) => setPriorityInput(e.target.value)}>
+      <select
+        value={priorityInput}
+        onChange={(e) => setPriorityInput(e.target.value)}
+      >
         <option value="High">High</option>
         <option value="Medium">Medium</option>
         <option value="Low">Low</option>
